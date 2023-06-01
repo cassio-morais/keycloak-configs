@@ -1,0 +1,781 @@
+{
+	"info": {
+		"_postman_id": "f963c53b-1142-4c3e-ab30-b1f0e3276c09",
+		"name": "Keycloak - Admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27655156"
+	},
+	"item": [
+		{
+			"name": "Groups",
+			"item": [
+				{
+					"name": "Get All Groups Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/groups?briefRepresentation=false&exact=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "briefRepresentation",
+									"value": "false"
+								},
+								{
+									"key": "exact",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Group Info by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/groups/9ec37e15-d08e-466a-a326-999c869743ae?briefRepresentation=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"groups",
+								"9ec37e15-d08e-466a-a326-999c869743ae"
+							],
+							"query": [
+								{
+									"key": "briefRepresentation",
+									"value": "false"
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Group By Search Query",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/groups?search=&briefRepresentation=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": ""
+								},
+								{
+									"key": "briefRepresentation",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Group or SubGroup",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"name\": \"grupoComRolesTest\",\r\n        \"attributes\": {\r\n            \"dashboard\": [\r\n                \"read\",\r\n                \"default\",\r\n                \"testeUpdate\",\r\n                \"taquara\"\r\n            ]\r\n        },\r\n        \"realmRoles\": [],\r\n        \"clientRoles\": { \"nave-mae\" : [\"padrao\"] },\r\n        \"subGroups\": []\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/groups/20ca4fbb-d2f3-4a92-946b-fedfea5c94ba",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"groups",
+								"20ca4fbb-d2f3-4a92-946b-fedfea5c94ba"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Group (without subGroup)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var getGroupUrl = pm.response.headers.get('Location')\r",
+									"console.log(getGroupUrl);\r",
+									"var groupId = getGroupUrl.slice(50);\r",
+									"\r",
+									"pm.collectionVariables.set(\"subGroupId\",groupId);\r",
+									"console.log(pm.collectionVariables.get('subGroupId'))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"name\": \"{{$randomCompanyName}}\",\r\n    \"attributes\": {},\r\n    \"realmRoles\": [],\r\n    \"clientRoles\": {},\r\n    \"access\": {\r\n        \"view\": true,\r\n        \"viewMembers\": true,\r\n        \"manageMembers\": true,\r\n        \"manage\": true,\r\n        \"manageMembership\": true\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/groups",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create SubGroup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"applications\",\r\n    \"attributes\": {\r\n        \"idAllin\": [\r\n            {{$randomInt}}\r\n        ],\r\n        \"idSocialMiner\": [\r\n            {{$randomInt}}\r\n        ]\r\n    },\r\n    \"realmRoles\": [],\r\n    \"clientRoles\": {},\r\n    \"subGroups\": [],\r\n        \"access\": {\r\n        \"view\": true,\r\n        \"viewMembers\": true,\r\n        \"manageMembers\": true,\r\n        \"manage\": true,\r\n        \"manageMembership\": true\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/groups/{{subGroupId}}/children",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"groups",
+								"{{subGroupId}}",
+								"children"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Map client(api/app) role to a group/subgroup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\r\n    \"id\": \"be549bba-61b5-488c-92bd-5f7a7aa395c0\",\r\n    \"name\": \"padrao\"\r\n    // \"description\": \"\",\r\n    // \"composite\": false,\r\n    // \"clientRole\": true,\r\n    // \"containerId\": \"d33a9e63-b3d5-4a95-acd1-55b0c6c79ad7\"\r\n}]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/groups/{{groupId}}/role-mappings/clients/d33a9e63-b3d5-4a95-acd1-55b0c6c79ad7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"groups",
+								"{{groupId}}",
+								"role-mappings",
+								"clients",
+								"d33a9e63-b3d5-4a95-acd1-55b0c6c79ad7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Get Realm Roles By Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/roles/dashboard.default",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"roles",
+								"dashboard.default"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Roles By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/roles-by-id/01b3bac7-760b-4ee4-a72e-ec53643272a2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"roles-by-id",
+								"01b3bac7-760b-4ee4-a72e-ec53643272a2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Realm Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/users/1bea3657-801a-4139-aa52-d727d92be46a/role-mappings/realm/composite?briefRepresentation=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"users",
+								"1bea3657-801a-4139-aa52-d727d92be46a",
+								"role-mappings",
+								"realm",
+								"composite"
+							],
+							"query": [
+								{
+									"key": "briefRepresentation",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Client Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/clients/{{clientId}}/roles/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"clients",
+								"{{clientId}}",
+								"roles",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Client Roles By Role Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/clients/{{clientId}}/roles/padrao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"clients",
+								"{{clientId}}",
+								"roles",
+								"padrao"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get User Info by User Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/users/1bea3657-801a-4139-aa52-d727d92be46a?briefRepresentation=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"users",
+								"1bea3657-801a-4139-aa52-d727d92be46a"
+							],
+							"query": [
+								{
+									"key": "briefRepresentation",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/users/?email=cassio.morais@allin.com.br&briefRepresentation=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"users",
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "cassio.morais@allin.com.br"
+								},
+								{
+									"key": "briefRepresentation",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Groups by User Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// var keyCloakAdminRequest = {\r",
+									"//     'client_id': 'admin-cli',\r",
+									"//     'username': 'admin',\r",
+									"//     'password': 'admin',\r",
+									"//     'grant_type': 'password'\r",
+									"// };\r",
+									"\r",
+									"// var formBody = [];\r",
+									"// for (var property in keyCloakAdminRequest) {\r",
+									"//   var encodedKey = encodeURIComponent(property);\r",
+									"//   var encodedValue = encodeURIComponent(keyCloakAdminRequest[property]);\r",
+									"//   formBody.push(encodedKey + \"=\" + encodedValue);\r",
+									"// }\r",
+									"// formBody = formBody.join(\"&\");\r",
+									"\r",
+									"// const tokenAdminRequest = {\r",
+									"//     url: \"http://localhost:8080/realms/master/protocol/openid-connect/token\",\r",
+									"//     method: 'POST',\r",
+									"//     header: {  'Content-Type': 'application/x-www-form-urlencoded', },\r",
+									"//     body: formBody\r",
+									"// };\r",
+									"\r",
+									"// pm.sendRequest(tokenAdminRequest, function (err, response) {\r",
+									"//     console.log(response.json());\r",
+									"//     pm.environment.set(\"keycloakAdminToken\", response.json().access_token);\r",
+									"//     console.log(pm.environment.get(\"keycloakAdminToken\"))\r",
+									"// });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/users/1bea3657-801a-4139-aa52-d727d92be46a/groups?briefRepresentation=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"users",
+								"1bea3657-801a-4139-aa52-d727d92be46a",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "briefRepresentation",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    // \"username\": {{$randomEmail}},\r\n    \"firstName\": \"pelé\",//{{$randomFirstName}},\r\n    \"lastName\": \"10\",//{{$randomLastName}},\r\n    \"email\": \"pele2@pele.com.br\",\r\n    \"username\" : \"pele2@pele.com.br\",\r\n    \"enabled\": true,\r\n    \"access\": {\r\n        \"manageGroupMembership\": true,\r\n        \"view\": true,\r\n        \"mapRoles\": true,\r\n        \"impersonate\": true,\r\n        \"manage\": true\r\n    },\r\n    \"groups\" : [\"/EmpresaViaApi-MD\", \"/EmpresaViaApi-MD/acl-padrao\"] \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "Get All Clients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/realms/myrealm/clients/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"realms",
+								"myrealm",
+								"clients",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Admin Token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "admin-cli",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realms",
+						"master",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3b0FZazZWM2c4ZUxnNjJLWGVNN01ReFpUdzI1VVVtaGhfaTVmMENBWUowIn0.eyJleHAiOjE2ODQzNDg2NjcsImlhdCI6MTY4NDM0ODM2NywianRpIjoiNDc3NTI4YmMtMDc4ZC00YzRiLWJmN2UtZjk4OTBjNjA4NTU4IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9teXJlYWxtIiwic3ViIjoiMWJlYTM2NTctODAxYS00MTM5LWFhNTItZDcyN2Q5MmJlNDZhIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibmF2ZS1tYWUiLCJzZXNzaW9uX3N0YXRlIjoiMTBhYTA3MzAtZTMxNi00ZjcyLTk1ZmEtMjZmYTg2OWNlNWJmIiwic2NvcGUiOiJvcGVuaWQgZW1wcmVzYXMgbWljcm9wcm9maWxlLWp3dCBwcm9maWxlIiwic2lkIjoiMTBhYTA3MzAtZTMxNi00ZjcyLTk1ZmEtMjZmYTg2OWNlNWJmIiwidXBuIjoiY2Fzc2lvIiwibmFtZSI6ImNhc3NpbyBtb3JhaXMiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjYXNzaW8iLCJnaXZlbl9uYW1lIjoiY2Fzc2lvIiwiZmFtaWx5X25hbWUiOiJtb3JhaXMifQ.urVvhLNwKW-ixFZcZfJ02qlFZeNSntgt_-MiLQqY6d4geEymn50kO_j-I86ZLHW6YeOcJRuihls4hFjwovgKOwbwf2iIdCEoPRJkrMowDUfimWN9IkwljsrsN61zeswkgH4AmWR_jTBPKNqyEYE7bW2WdIIYvkDdaTp-ZT_527yoTETh3XUYBLcs8tbMUz7bGZy_jiobowWs6V8fHfha0qeXB19G4V4ovVcRxEhlTBixL5aybwFdD_TnPFb5WVYFS-pFEfUiHZ31SaECtc-bN4dTaje_jpRmE3_bFTXp6WzOrorCFEZHIUf3825wHpTda6Dzd9TdzNNGGomkgG32cg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://localhost:8080/realms/myrealm/protocol/openid-connect/userinfo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realms",
+						"myrealm",
+						"protocol",
+						"openid-connect",
+						"userinfo"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{keycloakAdminToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// toda requisição aos endpoints de administração precisam de um bearer token do admin que é válido por 1 minuto",
+					"// dito isso, esse script foi feito para facilitar o ambiente de testes",
+					"",
+					"var keycloakAdminCredentials = {",
+					"    'client_id': 'admin-cli',",
+					"    'username': 'admin',",
+					"    'password': 'admin',",
+					"    'grant_type': 'password'",
+					"};",
+					"",
+					"var formBody = [];",
+					"for (var property in keycloakAdminCredentials) {",
+					"  var encodedKey = encodeURIComponent(property);",
+					"  var encodedValue = encodeURIComponent(keycloakAdminCredentials[property]);",
+					"  formBody.push(encodedKey + \"=\" + encodedValue);",
+					"}",
+					"formBody = formBody.join(\"&\");",
+					"",
+					"const tokenAdminRequest = {",
+					"    url: \"http://localhost:8080/realms/master/protocol/openid-connect/token\",",
+					"    method: 'POST',",
+					"    header: {  'Content-Type': 'application/x-www-form-urlencoded', },",
+					"    body: formBody",
+					"};",
+					"",
+					"pm.sendRequest(tokenAdminRequest, function (err, response) {",
+					"    // console.log(response.json());",
+					"    pm.environment.set(\"keycloakAdminToken\", response.json().access_token);",
+					"    console.log(pm.environment.get(\"keycloakAdminToken\"))",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "keycloakAdminToken",
+			"value": "keycloakAdminToken"
+		},
+		{
+			"key": "createGroupId",
+			"value": "createGroupId"
+		},
+		{
+			"key": "subGroupId",
+			"value": ""
+		},
+		{
+			"key": "groupId",
+			"value": "groupId",
+			"type": "default"
+		},
+		{
+			"key": "groupPadraoId",
+			"value": ""
+		},
+		{
+			"key": "clientId",
+			"value": "d33a9e63-b3d5-4a95-acd1-55b0c6c79ad7",
+			"type": "default"
+		}
+	]
+}
